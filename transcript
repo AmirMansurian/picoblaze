@@ -1,4 +1,4 @@
-# Reading C:/modeltech64_10.5/tcl/vsim/pref.tcl
+# Reading E:/MODEL2/tcl/vsim/pref.tcl
 # //  ModelSim SE-64 10.5 Feb 13 2016 
 # //
 # //  Copyright 1991-2016 Mentor Graphics Corporation
@@ -12,4 +12,4 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# OpenFile C:/Users/Amir/Desktop/picoblaze/KCPSM6_Release9_30Sept14/mul.v
+# OpenFile {C:/Users/Ofogh Rayaneh/Desktop/picoblaze-master/project_test.v}

@@ -8,64 +8,11 @@ CONSTANT OUTPUT_PORT5, 05
 start:
 	INPUT s0,INPUT_PORT1
 	INPUT s1,INPUT_PORT2
-	INPUT s2,INPUT_PORT3
-	INPUT s3,INPUT_PORT4
-	LOAD sf, s0
-	LOAD se, s0
-	CALL MUL
-	LOAD sc, sd ;A*A into sc
-	LOAD sf, s1
-	LOAD se, s1
-	CALL MUL
-	ADD sc, sd ;(A*A)+(B*B) into sc
-	LOAD sf, sc
-	LOAD sf, sc
-	CALL MUL
-	LOAD sb, sd ; ((A*A)+(B*B))^2 to sb
-	LOAD sf, sb
-	LOAD se, sc
-	CALL MUL
-	LOAD sc, sd ; ((A*A)+(B*B))^3 into sc
-	LOAD sf, s2
-	LOAD se, s2
-	CALL MUL 
-	LOAD sb, sd ; C^2 into sb
-	LOAD sf, s3
-	LOAD se, s3
-	CALL MUL
-	ADD sb, sd ; C^2 + D^2 into sb
-	LOAD sf, sb
-	LOAD se, sb
-	CALL MUL ; (C^2 + D^2)^2 into sd
-	SUB sc, sd ; result is in the sc
+	ADD s0, s1
+	LOAD sc, s0
 	OUTPUT sc, OUTPUT_PORT5
 	JUMP start
 
 
-MUL:
-	LOAD sd, 00
-
-	loop:
-		COMPARE se, 00
-		JUMP end
-		sr0 se
-		JUMP C, cal1
-		JUMP NC, cal0
-	
-	cal1:
-		ADD sd, sf
-		sl0 sf
-		JUMP loop
-
-	cal0:
-		sl0 sf
-		JUMP loop
-		
-	end:
-		return 
-		
-		
-	
-	
 	
 	

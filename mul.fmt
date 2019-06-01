@@ -7,52 +7,7 @@
 start: 
        INPUT s0, INPUT_PORT1
        INPUT s1, INPUT_PORT2
-       INPUT s2, INPUT_PORT3
-       INPUT s3, INPUT_PORT4
-       LOAD sF, s0
-       LOAD sE, s0
-       CALL MUL
-       LOAD sC, sD               ;A*A into sc
-       LOAD sF, s1
-       LOAD sE, s1
-       CALL MUL
-       ADD sC, sD                ;(A*A)+(B*B) into sc
-       LOAD sF, sC
-       LOAD sF, sC
-       CALL MUL
-       LOAD sB, sD               ; ((A*A)+(B*B))^2 to sb
-       LOAD sF, sB
-       LOAD sE, sC
-       CALL MUL
-       LOAD sC, sD               ; ((A*A)+(B*B))^3 into sc
-       LOAD sF, s2
-       LOAD sE, s2
-       CALL MUL
-       LOAD sB, sD               ; C^2 into sb
-       LOAD sF, s3
-       LOAD sE, s3
-       CALL MUL
-       ADD sB, sD                ; C^2 + D^2 into sb
-       LOAD sF, sB
-       LOAD sE, sB
-       CALL MUL                  ; (C^2 + D^2)^2 into sd
-       SUB sC, sD                ; result is in the sc
+       ADD s0, s1
+       LOAD sC, s0
        OUTPUT sC, OUTPUT_PORT5
        JUMP start
-  MUL: 
-       LOAD sD, 00
- loop: 
-       COMPARE sE, 00
-       JUMP end
-       SR0 sE
-       JUMP C, cal1
-       JUMP NC, cal0
- cal1: 
-       ADD sD, sF
-       SL0 sF
-       JUMP loop
- cal0: 
-       SL0 sF
-       JUMP loop
-  end: 
-       RETURN 
