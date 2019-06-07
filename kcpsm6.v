@@ -77,7 +77,7 @@
 module kcpsm6 (address, instruction, bram_enable, in_port, out_port, port_id, write_strobe, k_write_strobe, read_strobe, interrupt, interrupt_ack, sleep, reset, clk) ;
 
 parameter [7:0] 	hwbuild = 8'h00 ;
-parameter [11:0] 	interrupt_vector = 12'h3FF ;
+parameter [11:0] 	interrupt_vector = 12'h3ff ;
 parameter integer scratch_pad_memory_size = 64 ;   
 
 output [11:0]	address ;

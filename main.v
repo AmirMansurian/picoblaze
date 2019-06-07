@@ -1,70 +1,95 @@
-`timescale 1ps/1ps
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    19:59:51 06/01/2019 
+// Design Name: 
+// Module Name:    main 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module main(out, input_a, input_b, input_c, input_d, clk);
 
-module main (out, input_a, input_b, input_c, input_d, clk);
-
-input clk;
 input [1:0] input_a, input_b, input_c, input_d;
+input clk;
 output reg [7:0] out;
 
-wire [17:0] instruction;
-wire [11:0] address;
-wire [7:0] port_id;
-wire [7:0] out_port;
-wire write_strobe;
-reg [7:0] in_port;
-wire rst;
-wire bram_enable;
+wire	[11:0]	address;
+wire	[17:0]	instruction;
+wire			bram_enable;
+wire	[7:0]		port_id;
+wire	[7:0]		out_port;
+reg	[7:0]		in_port;
+wire			write_strobe;
+wire			k_write_strobe;
+wire			read_strobe;
+wire			interrupt;            //See note above
+wire			interrupt_ack;
+wire			kcpsm6_sleep;         //See note above
+wire			rdl;
 
 
+  kcpsm6 pico (
+	.address 		(address),
+	.instruction 	(instruction),
+	.bram_enable 	(bram_enable),
+	.port_id 		(port_id),
+	.write_strobe 	(write_strobe),
+	.k_write_strobe 	(k_write_strobe),
+	.out_port 		(out_port),
+	.read_strobe 	(read_strobe),
+	.in_port 		(in_port),
+	.interrupt 		(interrupt),
+	.interrupt_ack 	(interrupt_ack),
+	.reset 		(rdl),
+	.sleep		(kcpsm6_sleep),
+	.clk 			(clk)); 
 
-kcpsm6 picoblaze (
-			.address(address),
-			.instruction (instruction),
-			.port_id(port_id),
-			.write_strobe(write_strobe),
-			.bram_enable(),
-			.out_port(out_port),
-			.read_strobe(),
-			.in_port(in_port),
-			.interrupt(0),
-			.interrupt_ack(),
-			.reset(rst),
-			.clk(clk)
-						);
 
+  assign kcpsm6_sleep = 1'b0;
+  assign interrupt = 1'b0;
 
+  
+  MUL_TEST m (    				//Name to match your PSM file
+ 	.rdl 			(rdl),
+	.enable 		(bram_enable),
+	.address 		(address),
+	.instruction 	(instruction),
+	.clk 			(clk));
 
-mul multiplier (
-			.address(address),
-			.instruction(instruction),
-			.clk(clk),
-			.enable(1), 
-			.rdl(rst)
-						);
 	
-always @(posedge clk) begin
-	if(port_id == 1)
-		in_port = input_a;
-	else if(port_id == 2)
-		in_port = input_b;
-	else if(port_id == 5)
-		out = out_port;
-end	
-//assign in_port= (port_id==1) ? input_a :
-//					 (port_id==2) ? input_b :
-////					 (port_id==3) ? input_c : input_d;
-//
-//always @ (posedge clk)
-//	begin
-////		if (rst==1)
-////			out<=0;
-//
-//		if (write_strobe==1)
-//			if (port_id==5)
-//				out<=out_port;
-//	end
-//		
-//
-//
-endmodule
+ 
+  
+  
+ 
+ always @(posedge clk)
+ begin
+			if(port_id==1)
+				in_port=input_a;
+				
+			else if (port_id==2)
+				in_port = input_b;
 			
+			else if (port_id==3)
+				in_port = input_c;
+				
+			else if (port_id==4)
+				in_port = input_d;
+			
+			else if(port_id == 5 && write_strobe)
+				 out = out_port; 
+			
+ end
+
+
+endmodule
